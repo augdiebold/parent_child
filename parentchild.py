@@ -44,21 +44,16 @@ parent_child_pairs = [
 
 
 def findNodesWithZeroAndOneParents(data):
-    parents = []
-    children = []
 
-    for pair in data:
-        if pair[0] not in parents:
-            parents.append(pair[0])
-
-        children.append(pair[1])
+    parents, children = zip(*data)
 
     zero_parents = []
     one_parent = []
 
     for parent in parents:
-        if parent not in children:
-            zero_parents.append(parent)
+        if parent not in zero_parents:
+            if parent not in children:
+                zero_parents.append(parent)
 
     for child in children:
         if children.count(child) == 1:
