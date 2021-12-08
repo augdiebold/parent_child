@@ -35,22 +35,40 @@ parent_child_pairs = [
     (5, 7), (4, 5), (4, 9), (9, 12), (30, 16)
 ]
 
+# Zero parents
+# One parent or "child"
+# Parent = pair[0]
+# Child = pair[1]
+# Individuals that has zero parents are never children
+# Individuals that has only one parent appears at 1 pair only
+
 
 def findNodesWithZeroAndOneParents(data):
+    parents = []
+    children = []
 
-    parents = [pair[0] for pair in data]
-    children = [pair[1] for pair in data]
+    for pair in data:
+        if pair[0] not in parents:
+            parents.append(pair[0])
 
-    zero_parents = [parent for parent in parents if parent not in children]
-    zero_parents = list(set(zero_parents))
+        children.append(pair[1])
 
-    one_parent = sorted([child for child in children if children.count(child)==1])
+    zero_parents = []
+    one_parent = []
+
+    for parent in parents:
+        if parent not in children:
+            zero_parents.append(parent)
+
+    for child in children:
+        if children.count(child) == 1:
+            one_parent.append(child)
 
     return [zero_parents, one_parent]
 
 
 if __name__ == '__main__':
-    assert findNodesWithZeroAndOneParents(parent_child_pairs) == [
-        [1, 2, 4, 15, 30],
-        [5, 7, 9, 16]
-    ]
+    result = findNodesWithZeroAndOneParents(parent_child_pairs)
+    assert sorted(result[0]) == [1, 2, 4, 15, 30]
+    assert sorted(result[1]) == [5, 7, 9, 16]
+
