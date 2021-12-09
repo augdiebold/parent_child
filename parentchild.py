@@ -29,6 +29,7 @@ findNodesWithZeroAndOneParents(parentChildPairs) => [
 ]
 
 '''
+from collections import defaultdict
 
 parent_child_pairs = [
     (5, 6), (1, 3), (2, 3), (3, 6), (15, 12),
@@ -45,19 +46,21 @@ parent_child_pairs = [
 
 def findNodesWithZeroAndOneParents(data):
 
-    parent_count = {}
+    parent_count = defaultdict(int)
 
     for parent, child in data:
-        if not parent in parent_count:
-            parent_count[parent] = 0
+        parent_count.setdefault(parent, 0)
 
-        if child in parent_count:
-            parent_count[child] += 1
-        else:
-            parent_count[child] = 1
+        parent_count[child] += 1
 
-    zero_parents = [k for k, v in parent_count.items() if v == 0]
-    one_parent = [k for k, v in parent_count.items() if v == 1]
+    zero_parents = []
+    one_parent = []
+
+    for k, v in parent_count.items():
+        if v == 0:
+            zero_parents.append(k)
+        elif v == 1:
+            one_parent.append(k)
 
     return [zero_parents, one_parent]
 
